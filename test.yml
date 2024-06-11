@@ -2,19 +2,20 @@
 - name: Unarchive & Copy 
   hosts: test
   become: true
+  vars:
+    - app: apache2
 
   tasks:
   - name: Install Apache2
     apt: 
-      name: apache2
+      name: "{{ app }}"
       state: latest
   - name: Start Apache2
     service:
-      name: apache2
+      name: "{{ app }}"
       state: started
       enabled: true
   - name: Unarchive File
     unarchive:
       src: /tmp/classwebsite2.tar
       dest: /var/www/html
-      extra_opts: ['--strip-components=5','--show-stored-names']
