@@ -1,8 +1,12 @@
 ---
 - name: Create Docker Image 
-  hosts: dev
+  hosts: test
   become: true
   tasks:
+  - name: Unarchive & Copy
+    unarchive:
+      src: /tmp/classwebsite2.tar
+      dest: /tmp/classwebsite2/
   - name: Build an image 
     community.docker.docker_image:
       name: ansible-docker-image:ad1
