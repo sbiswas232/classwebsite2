@@ -3,6 +3,10 @@
   hosts: test
   become: true
   tasks:
+  - name: Create Directory
+    file:
+      path: /tmp/classwebsite2
+      state: directory
   - name: Unarchive & Copy
     unarchive:
       src: /tmp/classwebsite2.tar
