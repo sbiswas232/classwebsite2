@@ -1,21 +1,20 @@
 ---
-- name: Unarchive & Copy 
-  hosts: test
+- name: Create Docker Image 
+  hosts: dev
   become: true
-  vars:
-    - app: apache2
-
   tasks:
-  - name: Install Apache2
-    apt: 
-      name: "{{ app }}"
-      state: latest
-  - name: Start Apache2
-    service:
-      name: "{{ app }}"
+  - name: Build an image 
+    community.docker.docker_image:
+      name: ansible-docker-image:ad1
+      build:
+        path: /tmp/classwebsite2/
+        args:
+          listen_port: 80
+      source: build
+  - name: Create Container1
+    community.docker.docker_container:
+      name: adc1
+      image: ansible-docker-image:ad1
       state: started
-      enabled: true
-  - name: Unarchive File
-    unarchive:
-      src: /tmp/classwebsite2.tar
-      dest: /var/www/html
+      ports:
+        - "8080:80"
